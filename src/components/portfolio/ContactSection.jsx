@@ -128,7 +128,7 @@ export default function ContactSection() {
         />
       ))}
 
-      <div style={{ padding: '5%' }}>
+      <div className="mobile-padding tablet-padding" style={{ padding: 'clamp(20px, 5vw, 80px)' }}>
         {/* Hero title */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -171,10 +171,10 @@ export default function ContactSection() {
         </motion.div>
 
         {/* Main content grid */}
-        <div style={{
+        <div className="mobile-stack" style={{
           display: 'grid',
-          gridTemplateColumns: '1.2fr 0.8fr',
-          gap: '100px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 'clamp(40px, 8vw, 100px)',
           maxWidth: '1600px',
           margin: '0 auto',
           alignItems: 'start'
@@ -201,11 +201,11 @@ export default function ContactSection() {
             />
 
             {/* Contact methods grid */}
-            <div style={{
+            <div className="mobile-stack" style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '30px',
-              marginBottom: '60px'
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: 'clamp(20px, 4vw, 30px)',
+              marginBottom: 'clamp(40px, 8vw, 60px)'
             }}>
               {contactMethods.map((contact, i) => (
                 <motion.div
@@ -359,7 +359,7 @@ export default function ContactSection() {
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            style={{ position: 'sticky', top: '100px' }}
+            className="mobile-no-sticky" style={{ position: 'sticky', top: '100px' }}
           >
             <AnimatePresence mode="wait">
               {!submitted ? (

@@ -9,7 +9,7 @@ export default function Navbar() {
 
   const navItems = [
     { id: 'hero', label: 'Home', icon: '🏠' },
-    { id: 'about', label: 'About', icon: '👨‍💻' },
+    { id: 'about', label: 'About', icon: '👨💻' },
     { id: 'skills', label: 'Arsenal', icon: '⚡' },
     { id: 'projects', label: 'Mission', icon: '🚀' },
     { id: 'timeline', label: 'Timeline', icon: '📈' },
@@ -67,25 +67,26 @@ export default function Navbar() {
           left: 0,
           right: 0,
           zIndex: 1000,
-          padding: '20px 5%',
+          padding: 'clamp(10px, 3vw, 20px) clamp(15px, 5vw, 5%)',
           transition: 'all 0.3s ease'
         }}
       >
         <motion.div
           animate={{
             background: isScrolled ? 
-              'rgba(0,0,0,0.9)' : 
-              'rgba(0,0,0,0.1)',
-            backdropFilter: isScrolled ? 'blur(20px)' : 'blur(5px)',
+              'rgba(255,255,255,0.1)' : 
+              'rgba(255,255,255,0.05)',
+            backdropFilter: 'blur(20px)',
             borderRadius: isScrolled ? '25px' : '0px',
-            border: isScrolled ? '1px solid rgba(118,185,0,0.3)' : '1px solid transparent'
+            border: isScrolled ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.1)',
+            boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.3)' : 'none'
           }}
           transition={{ duration: 0.3 }}
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: isScrolled ? '15px 30px' : '20px 0',
+            padding: isScrolled ? 'clamp(10px, 2vw, 15px) clamp(15px, 4vw, 30px)' : 'clamp(15px, 3vw, 20px) 0',
             position: 'relative',
             overflow: 'hidden'
           }}
@@ -129,7 +130,7 @@ export default function Navbar() {
               }}
               transition={{ duration: 4, repeat: Infinity }}
               style={{
-                fontSize: isScrolled ? '1.5rem' : '2rem',
+                fontSize: isScrolled ? 'clamp(1.2rem, 4vw, 1.5rem)' : 'clamp(1.5rem, 5vw, 2rem)',
                 fontWeight: '900',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -166,9 +167,9 @@ export default function Navbar() {
                   border: activeSection === item.id ? 
                     'none' : 
                     '1px solid rgba(255,255,255,0.2)',
-                  padding: '12px 20px',
+                  padding: 'clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px)',
                   borderRadius: '20px',
-                  fontSize: '0.9rem',
+                  fontSize: 'clamp(0.7rem, 2vw, 0.9rem)',
                   fontWeight: '600',
                   fontFamily: 'Inter, sans-serif',
                   cursor: 'pointer',
@@ -319,16 +320,16 @@ export default function Navbar() {
                   onClick={() => scrollToSection(item.id)}
                   style={{
                     display: 'block',
-                    width: '300px',
-                    margin: '20px auto',
-                    padding: '20px',
+                    width: 'clamp(250px, 80vw, 300px)',
+                    margin: 'clamp(15px, 4vw, 20px) auto',
+                    padding: 'clamp(15px, 4vw, 20px)',
                     background: activeSection === item.id ? 
                       'linear-gradient(135deg, #76b900, #4ecdc4)' : 
                       'rgba(255,255,255,0.1)',
                     color: activeSection === item.id ? '#000000' : '#ffffff',
                     border: '2px solid rgba(118,185,0,0.3)',
                     borderRadius: '15px',
-                    fontSize: '1.2rem',
+                    fontSize: 'clamp(1rem, 4vw, 1.2rem)',
                     fontWeight: '600',
                     fontFamily: 'Inter, sans-serif',
                     cursor: 'pointer',

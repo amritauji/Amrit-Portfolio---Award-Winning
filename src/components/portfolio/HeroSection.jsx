@@ -3,14 +3,16 @@ import { motion } from 'framer-motion'
 
 export default function HeroSection() {
   return (
-    <section className="section" style={{
-      height: '100vh',
+    <section className="section mobile-stack" style={{
+      minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       position: 'relative',
       overflow: 'hidden',
-      padding: '0 5%'
+      padding: 'clamp(80px, 15vw, 120px) clamp(20px, 5vw, 80px) clamp(40px, 8vw, 80px)',
+      flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+      gap: 'clamp(40px, 8vw, 80px)'
     }}>
       {/* Dynamic mesh gradient background */}
       <motion.div
@@ -66,7 +68,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        style={{ flex: 1, maxWidth: '600px' }}
+        style={{ flex: 1, maxWidth: '600px', textAlign: window.innerWidth < 768 ? 'center' : 'left' }}
       >
         <motion.div
           style={{ overflow: 'hidden', marginBottom: '30px' }}
@@ -144,7 +146,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.9 }}
-          style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}
+          style={{ display: 'flex', gap: 'clamp(10px, 3vw, 15px)', flexWrap: 'wrap', justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start' }}
         >
           <motion.button
             whileHover={{ 
@@ -154,12 +156,12 @@ export default function HeroSection() {
             }}
             whileTap={{ scale: 0.95 }}
             style={{
-              padding: '18px 36px',
+              padding: 'clamp(12px, 3vw, 18px) clamp(24px, 6vw, 36px)',
               background: 'rgba(255,255,255,0.1)',
               color: '#ffffff',
               border: '1px solid rgba(255,255,255,0.2)',
               borderRadius: '50px',
-              fontSize: '14px',
+              fontSize: 'clamp(12px, 3vw, 14px)',
               fontWeight: '500',
               cursor: 'pointer',
               fontFamily: 'Inter, Helvetica, Arial, sans-serif',
@@ -244,8 +246,8 @@ export default function HeroSection() {
             ease: "linear"
           }}
           style={{
-            width: '400px',
-            height: '400px',
+            width: 'clamp(250px, 50vw, 400px)',
+            height: 'clamp(250px, 50vw, 400px)',
             position: 'relative',
             transformStyle: 'preserve-3d'
           }}
@@ -256,8 +258,8 @@ export default function HeroSection() {
               key={i}
               style={{
                 position: 'absolute',
-                width: '400px',
-                height: '400px',
+                width: 'clamp(250px, 50vw, 400px)',
+                height: 'clamp(250px, 50vw, 400px)',
                 background: `linear-gradient(135deg, ${i % 3 === 0 ? '#76b900' : i % 3 === 1 ? '#ff6b35' : '#4ecdc4'}22, transparent)`,
                 border: `2px solid ${i % 3 === 0 ? '#76b900' : i % 3 === 1 ? '#ff6b35' : '#4ecdc4'}`,
                 backdropFilter: 'blur(10px)',
@@ -271,7 +273,7 @@ export default function HeroSection() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '2rem',
+                fontSize: 'clamp(1.2rem, 4vw, 2rem)',
                 color: i % 3 === 0 ? '#76b900' : i % 3 === 1 ? '#ff6b35' : '#4ecdc4'
               }}
             >

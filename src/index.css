@@ -54,7 +54,7 @@ input, textarea {
   background: none;
 }
 
-/* Responsive navbar */
+/* Responsive design */
 @media (max-width: 768px) {
   .desktop-nav {
     display: none !important;
@@ -62,5 +62,68 @@ input, textarea {
   
   .mobile-menu-btn {
     display: flex !important;
+  }
+  
+  /* Mobile optimizations */
+  body {
+    font-size: 14px;
+  }
+  
+  /* Reduce padding on mobile */
+  .mobile-padding {
+    padding: 20px !important;
+  }
+  
+  /* Stack grid layouts vertically */
+  .mobile-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+  
+  /* Smaller text on mobile */
+  .mobile-text {
+    font-size: clamp(0.8rem, 3vw, 1rem) !important;
+  }
+  
+  /* Smaller headings on mobile */
+  .mobile-heading {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+  }
+  
+  /* Remove sticky positioning on mobile */
+  .mobile-no-sticky {
+    position: static !important;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet optimizations */
+  .tablet-padding {
+    padding: 40px !important;
+  }
+  
+  .tablet-text {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important;
+  }
+  
+  .tablet-heading {
+    font-size: clamp(2rem, 5vw, 3rem) !important;
+  }
+}
+
+/* Large mobile styles */
+@media (max-width: 480px) {
+  .small-mobile-padding {
+    padding: 15px !important;
+  }
+  
+  .small-mobile-text {
+    font-size: clamp(0.7rem, 3.5vw, 0.9rem) !important;
+  }
+  
+  .small-mobile-heading {
+    font-size: clamp(1.2rem, 7vw, 2rem) !important;
   }
 }

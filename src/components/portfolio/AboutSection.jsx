@@ -28,11 +28,12 @@ export default function AboutSection() {
         }}
       />
       
-      <div style={{ 
+      <div className="mobile-stack" style={{ 
         display: 'grid', 
-        gridTemplateColumns: '1fr 1fr', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
         minHeight: '100vh',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: 'clamp(20px, 5vw, 40px)'
       }}>
         
         {/* Left side - Interactive photo area */}
@@ -41,7 +42,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           style={{ 
-            padding: '10%',
+            padding: 'clamp(20px, 8vw, 10%)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -83,8 +84,8 @@ export default function AboutSection() {
               boxShadow: '0 30px 60px rgba(118,185,0,0.3)'
             }}
             style={{
-              width: '400px',
-              height: '400px',
+              width: 'clamp(250px, 60vw, 400px)',
+              height: 'clamp(250px, 60vw, 400px)',
               background: 'linear-gradient(135deg, rgba(118,185,0,0.1), rgba(76,205,196,0.1))',
               borderRadius: '30px',
               display: 'flex',
@@ -121,8 +122,8 @@ export default function AboutSection() {
               onClick={() => setImagePopup(true)}
               transition={{ duration: 0.3, ease: "easeOut" }}
               style={{
-                width: '280px',
-                height: '280px',
+                width: 'clamp(180px, 45vw, 280px)',
+                height: 'clamp(180px, 45vw, 280px)',
                 borderRadius: '50%',
                 objectFit: 'cover',
                 border: '3px solid #76b900',
@@ -189,7 +190,7 @@ export default function AboutSection() {
           initial={{ opacity: 0, x: 100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          style={{ padding: '10%' }}
+          style={{ padding: 'clamp(20px, 8vw, 10%)' }}
         >
           <motion.div
             style={{ overflow: 'hidden', marginBottom: '40px' }}

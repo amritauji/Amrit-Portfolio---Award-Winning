@@ -137,7 +137,7 @@ export default function ExperienceSection() {
         />
       ))}
 
-      <div style={{ padding: '5%' }}>
+      <div className="mobile-padding tablet-padding" style={{ padding: 'clamp(20px, 5vw, 80px)' }}>
         {/* Massive title */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -183,9 +183,9 @@ export default function ExperienceSection() {
           />
 
           {/* Timeline items */}
-          <div style={{
+          <div className="mobile-stack" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: '40px',
             position: 'relative'
           }}>
@@ -424,10 +424,10 @@ export default function ExperienceSection() {
               </p>
 
               {/* Detailed content grid */}
-              <div style={{
+              <div className="mobile-stack" style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                gap: '30px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '20px',
                 marginTop: '40px',
                 maxWidth: '1000px',
                 margin: '40px auto 0 auto'

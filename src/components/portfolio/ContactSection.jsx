@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ContactSection() {
@@ -6,7 +6,24 @@ export default function ContactSection() {
   const [activeField, setActiveField] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const cursorRef = useRef({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [activeContact, setActiveContact] = useState(0)
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  // Auto-rotate contact methods
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveContact(prev => (prev + 1) % contactMethods.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -20,255 +37,329 @@ export default function ContactSection() {
     { 
       icon: '📧', 
       label: 'Email', 
-      value: 'amrit.auji@example.com',
+      value: 'amritauji93@gmail.com',
       color: '#76b900',
-      description: 'Drop me a line anytime'
+      description: 'Drop me a line anytime',
+      url: 'mailto:amritauji93@gmail.com',
+      bgGradient: 'linear-gradient(135deg, #76b900, #5a8f00)'
     },
     { 
       icon: '💼', 
       label: 'LinkedIn', 
-      value: 'linkedin.com/in/amritauji',
+      value: 'linkedin.com/in/amrit-auji',
       color: '#4ecdc4',
-      description: 'Let\'s connect professionally'
+      description: 'Let\'s connect professionally',
+      url: 'https://www.linkedin.com/in/amrit-auji/',
+      bgGradient: 'linear-gradient(135deg, #4ecdc4, #44a08d)'
     },
     { 
       icon: '🐙', 
       label: 'GitHub', 
       value: 'github.com/amritauji',
       color: '#ff6b35',
-      description: 'Check out my code'
+      description: 'Check out my code',
+      url: 'https://github.com/amritauji',
+      bgGradient: 'linear-gradient(135deg, #ff6b35, #f7931e)'
+    },
+    { 
+      icon: '🐦', 
+      label: 'Twitter/X', 
+      value: 'x.com/amrit_auji',
+      color: '#9b59b6',
+      description: 'Follow my journey',
+      url: 'https://x.com/amrit_auji',
+      bgGradient: 'linear-gradient(135deg, #9b59b6, #8e44ad)'
     }
   ]
 
   return (
-    <section className="section" style={{
+    <section style={{
       minHeight: '100vh',
       padding: '0',
       position: 'relative',
       overflow: 'hidden',
-      background: 'linear-gradient(135deg, #000000 0%, #111111 50%, #000000 100%)'
+      background: 'radial-gradient(ellipse at center, #111111 0%, #000000 100%)'
     }}>
-      {/* Animated neural network background */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-        {Array.from({ length: 30 }).map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.1, 0.3, 0.1]
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 2
-            }}
-            style={{
-              position: 'absolute',
-              width: '2px',
-              height: '2px',
-              background: '#76b900',
-              borderRadius: '50%',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
-            }}
-          />
-        ))}
-        
-        {/* Connection lines */}
-        <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.1 }}>
-          {Array.from({ length: 15 }).map((_, i) => (
-            <motion.line
-              key={i}
-              x1={`${Math.random() * 100}%`}
-              y1={`${Math.random() * 100}%`}
-              x2={`${Math.random() * 100}%`}
-              y2={`${Math.random() * 100}%`}
-              stroke="#76b900"
-              strokeWidth="1"
-              animate={{ opacity: [0, 0.3, 0] }}
-              transition={{ duration: 4, repeat: Infinity, delay: i * 0.3 }}
-            />
-          ))}
-        </svg>
-      </div>
+      {/* Dynamic cursor follower */}
+      <motion.div
+        animate={{
+          x: mousePosition.x - 10,
+          y: mousePosition.y - 10
+        }}
+        transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        style={{
+          position: 'fixed',
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          background: contactMethods[activeContact].color,
+          pointerEvents: 'none',
+          zIndex: 9999,
+          opacity: 0.6,
+          filter: 'blur(1px)'
+        }}
+      />
+
+      {/* Floating orbs */}
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{
+            y: [0, -40, 0],
+            x: [0, Math.sin(i) * 20, 0],
+            opacity: [0.1, 0.4, 0.1],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{
+            duration: 6 + Math.random() * 4,
+            repeat: Infinity,
+            delay: Math.random() * 3
+          }}
+          style={{
+            position: 'absolute',
+            width: `${8 + Math.random() * 16}px`,
+            height: `${8 + Math.random() * 16}px`,
+            background: contactMethods[i % contactMethods.length].color,
+            borderRadius: '50%',
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            filter: 'blur(1px)'
+          }}
+        />
+      ))}
 
       <div style={{ padding: '5%' }}>
-        {/* Creative title */}
+        {/* Hero title */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          style={{ marginBottom: '100px', textAlign: 'center' }}
+          style={{ textAlign: 'center', marginBottom: '120px' }}
         >
           <motion.h2
             initial={{ y: 100, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             style={{
-              fontSize: 'clamp(2.5rem, 8vw, 8rem)',
+              fontSize: 'clamp(4rem, 12vw, 12rem)',
               fontWeight: '900',
-              background: 'linear-gradient(135deg, #ffffff 0%, #76b900 50%, #4ecdc4 100%)',
+              background: 'linear-gradient(135deg, #ffffff 0%, #76b900 30%, #4ecdc4 60%, #ff6b35 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               fontFamily: 'Inter, sans-serif',
-              letterSpacing: '-3px',
-              lineHeight: '0.9',
-              marginBottom: '30px'
+              letterSpacing: '-4px',
+              lineHeight: '0.8',
+              marginBottom: '40px'
             }}
           >
-            COMMUNICATION
+            LET'S TALK
           </motion.h2>
-          
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 2, delay: 0.5 }}
-            style={{
-              height: '6px',
-              width: '400px',
-              background: 'linear-gradient(90deg, #76b900, #4ecdc4, #ff6b35)',
-              margin: '0 auto',
-              borderRadius: '3px'
-            }}
-          />
           
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.5 }}
             style={{
-              fontSize: '1.2rem',
+              fontSize: '1.4rem',
               color: '#cccccc',
-              marginTop: '30px',
-              fontFamily: 'Inter, sans-serif'
+              fontFamily: 'Inter, sans-serif',
+              maxWidth: '600px',
+              margin: '0 auto'
             }}
           >
-            Ready to build the future together?
+            Ready to build something extraordinary together? Let's connect and make it happen.
           </motion.p>
         </motion.div>
 
+        {/* Main content grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '80px',
-          maxWidth: '1400px',
+          gridTemplateColumns: '1.2fr 0.8fr',
+          gap: '100px',
+          maxWidth: '1600px',
           margin: '0 auto',
           alignItems: 'start'
         }}>
           
-          {/* Left side - Contact methods */}
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <motion.h3
-              style={{
-                fontSize: '2.5rem',
-                fontWeight: '700',
-                color: '#76b900',
-                marginBottom: '50px',
-                fontFamily: 'Inter, sans-serif'
+          {/* Left - Contact showcase */}
+          <div style={{ position: 'relative' }}>
+            {/* Background showcase */}
+            <motion.div
+              animate={{ 
+                background: contactMethods[activeContact].bgGradient,
+                opacity: [0.1, 0.2, 0.1]
               }}
-            >
-              Let's Connect
-            </motion.h3>
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                position: 'absolute',
+                top: '-50px',
+                left: '-50px',
+                right: '-50px',
+                bottom: '-50px',
+                borderRadius: '40px',
+                zIndex: -1
+              }}
+            />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+            {/* Contact methods grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '30px',
+              marginBottom: '60px'
+            }}>
               {contactMethods.map((contact, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   whileHover={{ 
-                    x: 20, 
                     scale: 1.05,
-                    boxShadow: `0 20px 40px ${contact.color}33`
+                    rotateY: 5,
+                    boxShadow: `0 30px 60px ${contact.color}33`
                   }}
-                  transition={{ delay: i * 0.2 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setActiveContact(i)
+                    window.open(contact.url, '_blank')
+                  }}
+                  transition={{ delay: i * 0.1 }}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    padding: '30px',
-                    borderRadius: '20px',
-                    border: `2px solid ${contact.color}33`,
+                    background: activeContact === i ? 
+                      `linear-gradient(135deg, ${contact.color}22, transparent)` : 
+                      'rgba(255,255,255,0.03)',
+                    padding: '40px',
+                    borderRadius: '25px',
+                    border: `2px solid ${activeContact === i ? contact.color : 'rgba(255,255,255,0.1)'}`,
                     backdropFilter: 'blur(20px)',
                     cursor: 'pointer',
                     position: 'relative',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    transition: 'all 0.3s ease'
                   }}
                 >
-                  {/* Animated background glow */}
+                  {/* Animated corner accent */}
                   <motion.div
                     animate={{
-                      background: [
-                        `radial-gradient(circle at 0% 0%, ${contact.color}22 0%, transparent 50%)`,
-                        `radial-gradient(circle at 100% 100%, ${contact.color}22 0%, transparent 50%)`,
-                        `radial-gradient(circle at 0% 0%, ${contact.color}22 0%, transparent 50%)`
-                      ]
+                      opacity: activeContact === i ? [0, 1, 0] : 0,
+                      scale: activeContact === i ? [0, 1.2, 0] : 0
                     }}
-                    transition={{ duration: 4, repeat: Infinity }}
+                    transition={{ duration: 2, repeat: Infinity }}
                     style={{
                       position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      zIndex: -1
+                      top: '15px',
+                      right: '15px',
+                      width: '8px',
+                      height: '8px',
+                      background: contact.color,
+                      borderRadius: '50%'
                     }}
                   />
 
-                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
-                    <motion.div
-                      animate={{ rotate: [0, 10, -10, 0] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      style={{
-                        fontSize: '2.5rem',
-                        marginRight: '20px',
-                        filter: `drop-shadow(0 0 10px ${contact.color})`
-                      }}
-                    >
-                      {contact.icon}
-                    </motion.div>
-                    <div>
-                      <h4 style={{
-                        color: contact.color,
-                        fontSize: '1.3rem',
-                        fontFamily: 'Inter, sans-serif',
-                        fontWeight: '600',
-                        margin: 0
-                      }}>
-                        {contact.label}
-                      </h4>
-                      <p style={{
-                        color: '#cccccc',
-                        fontSize: '0.9rem',
-                        margin: '5px 0 0 0',
-                        fontFamily: 'Inter, sans-serif'
-                      }}>
-                        {contact.description}
-                      </p>
-                    </div>
-                  </div>
+                  <motion.div
+                    animate={{ 
+                      rotate: activeContact === i ? [0, 360] : 0,
+                      scale: activeContact === i ? [1, 1.2, 1] : 1
+                    }}
+                    transition={{ duration: 3, repeat: activeContact === i ? Infinity : 0 }}
+                    style={{
+                      fontSize: '3rem',
+                      marginBottom: '20px',
+                      filter: activeContact === i ? `drop-shadow(0 0 20px ${contact.color})` : 'none'
+                    }}
+                  >
+                    {contact.icon}
+                  </motion.div>
+                  
+                  <h3 style={{
+                    color: activeContact === i ? contact.color : '#ffffff',
+                    fontSize: '1.4rem',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: '700',
+                    marginBottom: '8px',
+                    transition: 'color 0.3s ease'
+                  }}>
+                    {contact.label}
+                  </h3>
                   
                   <p style={{
-                    color: '#ffffff',
-                    fontSize: '1rem',
+                    color: '#cccccc',
+                    fontSize: '0.9rem',
                     fontFamily: 'Inter, sans-serif',
-                    margin: 0,
-                    fontWeight: '500'
+                    marginBottom: '15px'
+                  }}>
+                    {contact.description}
+                  </p>
+                  
+                  <p style={{
+                    color: activeContact === i ? contact.color : '#ffffff',
+                    fontSize: '0.85rem',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: '500',
+                    opacity: 0.8,
+                    transition: 'color 0.3s ease'
                   }}>
                     {contact.value}
                   </p>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
 
-          {/* Right side - Futuristic contact form */}
+            {/* Active contact showcase */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeContact}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -30, scale: 0.9 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  background: `linear-gradient(135deg, ${contactMethods[activeContact].color}11, transparent)`,
+                  padding: '40px',
+                  borderRadius: '30px',
+                  border: `2px solid ${contactMethods[activeContact].color}33`,
+                  backdropFilter: 'blur(20px)',
+                  textAlign: 'center'
+                }}
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  style={{
+                    fontSize: '4rem',
+                    marginBottom: '20px',
+                    filter: `drop-shadow(0 0 30px ${contactMethods[activeContact].color})`
+                  }}
+                >
+                  {contactMethods[activeContact].icon}
+                </motion.div>
+                
+                <h3 style={{
+                  color: contactMethods[activeContact].color,
+                  fontSize: '2rem',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: '700',
+                  marginBottom: '10px'
+                }}>
+                  {contactMethods[activeContact].label}
+                </h3>
+                
+                <p style={{
+                  color: '#ffffff',
+                  fontSize: '1.1rem',
+                  fontFamily: 'Inter, sans-serif'
+                }}>
+                  {contactMethods[activeContact].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Right - Contact form */}
           <motion.div
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
+            style={{ position: 'sticky', top: '100px' }}
           >
             <AnimatePresence mode="wait">
               {!submitted ? (
@@ -278,48 +369,58 @@ export default function ContactSection() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   style={{
-                    background: 'linear-gradient(135deg, rgba(118,185,0,0.1), rgba(76,205,196,0.1))',
+                    background: 'rgba(255,255,255,0.03)',
                     padding: '50px',
                     borderRadius: '30px',
-                    border: '2px solid rgba(118,185,0,0.3)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                     backdropFilter: 'blur(20px)',
                     position: 'relative',
                     overflow: 'hidden'
                   }}
                 >
-                  {/* Animated border */}
+                  {/* Floating form accent */}
                   <motion.div
-                    animate={{ rotate: 360 }}
+                    animate={{
+                      rotate: 360,
+                      scale: [1, 1.1, 1]
+                    }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     style={{
                       position: 'absolute',
-                      top: '-2px',
-                      left: '-2px',
-                      right: '-2px',
-                      bottom: '-2px',
-                      background: 'conic-gradient(from 0deg, #76b900, #4ecdc4, #ff6b35, #76b900)',
-                      borderRadius: '32px',
-                      zIndex: -1,
-                      opacity: 0.5
+                      top: '-100px',
+                      right: '-100px',
+                      width: '200px',
+                      height: '200px',
+                      background: `conic-gradient(from 0deg, ${contactMethods[activeContact].color}44, transparent, ${contactMethods[activeContact].color}44)`,
+                      borderRadius: '50%',
+                      zIndex: -1
                     }}
                   />
 
                   <h3 style={{
-                    color: '#76b900',
-                    fontSize: '2rem',
+                    color: '#ffffff',
+                    fontSize: '2.5rem',
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '700',
-                    marginBottom: '40px',
-                    textAlign: 'center'
+                    marginBottom: '15px'
                   }}>
-                    Mission Control
+                    Start a Project
                   </h3>
+                  
+                  <p style={{
+                    color: '#cccccc',
+                    fontSize: '1rem',
+                    fontFamily: 'Inter, sans-serif',
+                    marginBottom: '40px'
+                  }}>
+                    Tell me about your vision and let's bring it to life.
+                  </p>
 
                   <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
                     {[
-                      { key: 'name', placeholder: 'Agent Name', type: 'text' },
-                      { key: 'email', placeholder: 'Communication Channel', type: 'email' },
-                      { key: 'message', placeholder: 'Mission Brief', type: 'textarea' }
+                      { key: 'name', placeholder: 'Your Name', type: 'text' },
+                      { key: 'email', placeholder: 'Email Address', type: 'email' },
+                      { key: 'message', placeholder: 'Project Details', type: 'textarea' }
                     ].map((field, i) => (
                       <motion.div
                         key={field.key}
@@ -332,7 +433,7 @@ export default function ContactSection() {
                           <motion.textarea
                             whileFocus={{ 
                               scale: 1.02,
-                              boxShadow: '0 0 30px rgba(118,185,0,0.3)'
+                              borderColor: contactMethods[activeContact].color
                             }}
                             onFocus={() => setActiveField(field.key)}
                             onBlur={() => setActiveField(null)}
@@ -343,8 +444,8 @@ export default function ContactSection() {
                             style={{
                               width: '100%',
                               padding: '20px',
-                              background: 'rgba(0,0,0,0.5)',
-                              border: `2px solid ${activeField === field.key ? '#76b900' : 'rgba(118,185,0,0.3)'}`,
+                              background: 'rgba(0,0,0,0.3)',
+                              border: `2px solid ${activeField === field.key ? contactMethods[activeContact].color : 'rgba(255,255,255,0.1)'}`,
                               borderRadius: '15px',
                               color: '#ffffff',
                               fontSize: '16px',
@@ -357,7 +458,7 @@ export default function ContactSection() {
                           <motion.input
                             whileFocus={{ 
                               scale: 1.02,
-                              boxShadow: '0 0 30px rgba(118,185,0,0.3)'
+                              borderColor: contactMethods[activeContact].color
                             }}
                             onFocus={() => setActiveField(field.key)}
                             onBlur={() => setActiveField(null)}
@@ -368,8 +469,8 @@ export default function ContactSection() {
                             style={{
                               width: '100%',
                               padding: '20px',
-                              background: 'rgba(0,0,0,0.5)',
-                              border: `2px solid ${activeField === field.key ? '#76b900' : 'rgba(118,185,0,0.3)'}`,
+                              background: 'rgba(0,0,0,0.3)',
+                              border: `2px solid ${activeField === field.key ? contactMethods[activeContact].color : 'rgba(255,255,255,0.1)'}`,
                               borderRadius: '15px',
                               color: '#ffffff',
                               fontSize: '16px',
@@ -378,37 +479,13 @@ export default function ContactSection() {
                             }}
                           />
                         )}
-                        
-                        {/* Field label animation */}
-                        <AnimatePresence>
-                          {activeField === field.key && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 10 }}
-                              style={{
-                                position: 'absolute',
-                                top: '-10px',
-                                left: '20px',
-                                background: '#76b900',
-                                color: '#000',
-                                padding: '4px 12px',
-                                borderRadius: '10px',
-                                fontSize: '0.8rem',
-                                fontWeight: '600'
-                              }}
-                            >
-                              {field.placeholder}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </motion.div>
                     ))}
 
                     <motion.button
                       whileHover={{ 
                         scale: 1.05,
-                        boxShadow: '0 20px 40px rgba(118,185,0,0.4)'
+                        boxShadow: `0 20px 40px ${contactMethods[activeContact].color}44`
                       }}
                       whileTap={{ scale: 0.95 }}
                       disabled={isSubmitting}
@@ -417,7 +494,7 @@ export default function ContactSection() {
                         padding: '20px',
                         background: isSubmitting ? 
                           'linear-gradient(45deg, #666, #888)' :
-                          'linear-gradient(45deg, #76b900, #4ecdc4)',
+                          contactMethods[activeContact].bgGradient,
                         color: '#000000',
                         border: 'none',
                         borderRadius: '15px',
@@ -425,43 +502,10 @@ export default function ContactSection() {
                         fontWeight: '700',
                         cursor: isSubmitting ? 'not-allowed' : 'pointer',
                         fontFamily: 'Inter, sans-serif',
-                        position: 'relative',
-                        overflow: 'hidden'
+                        transition: 'all 0.3s ease'
                       }}
                     >
-                      <AnimatePresence mode="wait">
-                        {isSubmitting ? (
-                          <motion.div
-                            key="loading"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
-                          >
-                            <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                              style={{
-                                width: '20px',
-                                height: '20px',
-                                border: '2px solid #000',
-                                borderTop: '2px solid transparent',
-                                borderRadius: '50%'
-                              }}
-                            />
-                            Transmitting...
-                          </motion.div>
-                        ) : (
-                          <motion.span
-                            key="text"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                          >
-                            🚀 Launch Mission
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </motion.button>
                   </form>
                 </motion.div>
@@ -471,10 +515,10 @@ export default function ContactSection() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   style={{
-                    background: 'linear-gradient(135deg, rgba(118,185,0,0.2), rgba(76,205,196,0.2))',
+                    background: `linear-gradient(135deg, ${contactMethods[activeContact].color}22, transparent)`,
                     padding: '80px 50px',
                     borderRadius: '30px',
-                    border: '2px solid #76b900',
+                    border: `2px solid ${contactMethods[activeContact].color}`,
                     textAlign: 'center',
                     backdropFilter: 'blur(20px)'
                   }}
@@ -484,23 +528,23 @@ export default function ContactSection() {
                     transition={{ duration: 2, repeat: Infinity }}
                     style={{ fontSize: '4rem', marginBottom: '30px' }}
                   >
-                    ✅
+                    ✨
                   </motion.div>
                   <h3 style={{
-                    color: '#76b900',
+                    color: contactMethods[activeContact].color,
                     fontSize: '2rem',
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: '700',
                     marginBottom: '20px'
                   }}>
-                    Mission Received!
+                    Message Sent!
                   </h3>
                   <p style={{
                     color: '#ffffff',
                     fontSize: '1.1rem',
                     fontFamily: 'Inter, sans-serif'
                   }}>
-                    Your message has been transmitted successfully. I'll respond within 24 hours.
+                    Thanks for reaching out! I'll get back to you within 24 hours.
                   </p>
                 </motion.div>
               )}

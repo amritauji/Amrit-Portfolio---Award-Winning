@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useLenis } from '../hooks/useLenis'
 import Navbar from './Navbar'
 import HeroSection from './portfolio/HeroSection'
 import AboutSection from './portfolio/AboutSection'
@@ -10,6 +11,8 @@ import ContactSection from './portfolio/ContactSection'
 import Footer from './portfolio/Footer'
 
 export default function PortfolioSite({ currentScene }) {
+  useLenis()
+  
   useEffect(() => {
     console.log('PortfolioSite mounted, currentScene:', currentScene)
   }, [currentScene])
@@ -22,12 +25,7 @@ export default function PortfolioSite({ currentScene }) {
   }
 
   return (
-    <div style={{
-      width: '100%',
-      height: '100vh',
-      overflow: 'auto',
-      scrollBehavior: 'smooth'
-    }}>
+    <div>
       <Navbar />
       <div id="hero"><HeroSection /></div>
       <div id="about"><AboutSection /></div>

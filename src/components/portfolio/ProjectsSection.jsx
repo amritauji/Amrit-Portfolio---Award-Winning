@@ -1,8 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ProjectsSection() {
   const [activeProject, setActiveProject] = useState(0)
+  
+  // Auto-rotate projects every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveProject(prev => (prev + 1) % projects.length)
+    }, 3000)
+    
+    return () => clearInterval(interval)
+  }, [])
+  
+  // Activate projects on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = document.getElementById('projects')
+      if (section) {
+        const rect = section.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+        
+        if (isVisible) {
+          const scrollProgress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / window.innerHeight))
+          const newActiveProject = Math.floor(scrollProgress * projects.length)
+          if (newActiveProject < projects.length) {
+            setActiveProject(newActiveProject)
+          }
+        }
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   
   const projects = [
     {

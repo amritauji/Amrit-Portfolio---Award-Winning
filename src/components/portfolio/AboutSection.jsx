@@ -1,7 +1,9 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function AboutSection() {
+  const [imagePopup, setImagePopup] = useState(false)
+  
   return (
     <section className="section" style={{
       minHeight: '100vh',
@@ -81,8 +83,8 @@ export default function AboutSection() {
               boxShadow: '0 30px 60px rgba(118,185,0,0.3)'
             }}
             style={{
-              width: '300px',
-              height: '300px',
+              width: '400px',
+              height: '400px',
               background: 'linear-gradient(135deg, rgba(118,185,0,0.1), rgba(76,205,196,0.1))',
               borderRadius: '30px',
               display: 'flex',
@@ -107,6 +109,34 @@ export default function AboutSection() {
               }}
             />
             
+            {/* Replace 'your-photo.jpg' with your actual image path */}
+            <motion.img 
+              src="/amrit-photo.png" 
+              alt="Amrit N. Auji"
+              whileHover={{ 
+                scale: 1.1,
+                boxShadow: '0 20px 40px rgba(118,185,0,0.5)'
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setImagePopup(true)}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              style={{
+                width: '280px',
+                height: '280px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '3px solid #76b900',
+                zIndex: 1,
+                cursor: 'pointer'
+              }}
+              onError={(e) => {
+                // Fallback to initials if image fails to load
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+            
+            {/* Fallback initials */}
             <div style={{
               fontSize: '4rem',
               fontWeight: '900',
@@ -114,7 +144,12 @@ export default function AboutSection() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               fontFamily: 'Inter, sans-serif',
-              zIndex: 1
+              zIndex: 1,
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '280px',
+              height: '280px'
             }}>
               AN
             </div>
@@ -281,6 +316,158 @@ export default function AboutSection() {
           </motion.div>
         </motion.div>
       </div>
+      
+      {/* Awwwards-style Image Popup */}
+      <AnimatePresence>
+        {imagePopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setImagePopup(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'rgba(0,0,0,0.9)',
+              backdropFilter: 'blur(20px)',
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0, rotateY: -90 }}
+              animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+              exit={{ scale: 0.5, opacity: 0, rotateY: 90 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'relative',
+                maxWidth: '80vw',
+                maxHeight: '80vh'
+              }}
+            >
+              {/* Floating particles around popup */}
+              {Array.from({ length: 12 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    y: [0, -30, 0],
+                    opacity: [0.3, 0.8, 0.3],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2
+                  }}
+                  style={{
+                    position: 'absolute',
+                    width: '6px',
+                    height: '6px',
+                    background: i % 2 === 0 ? '#76b900' : '#4ecdc4',
+                    borderRadius: '50%',
+                    left: `${-50 + Math.random() * 200}%`,
+                    top: `${-50 + Math.random() * 200}%`,
+                    zIndex: -1
+                  }}
+                />
+              ))}
+              
+              {/* Main popup image */}
+              <motion.img
+                src="/amrit-photo.png"
+                alt="Amrit N. Auji"
+                animate={{ 
+                  boxShadow: [
+                    '0 0 50px rgba(118,185,0,0.5)',
+                    '0 0 80px rgba(76,205,196,0.5)',
+                    '0 0 50px rgba(118,185,0,0.5)'
+                  ]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                style={{
+                  width: '500px',
+                  height: '500px',
+                  borderRadius: '20px',
+                  objectFit: 'cover',
+                  border: '4px solid #76b900'
+                }}
+              />
+              
+              {/* Info overlay */}
+              <motion.div
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                style={{
+                  position: 'absolute',
+                  bottom: '-80px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: 'rgba(0,0,0,0.8)',
+                  backdropFilter: 'blur(20px)',
+                  padding: '20px 40px',
+                  borderRadius: '15px',
+                  border: '1px solid rgba(118,185,0,0.3)',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                <h3 style={{
+                  color: '#76b900',
+                  fontSize: '1.5rem',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: '700',
+                  margin: '0 0 5px 0'
+                }}>
+                  Amrit N. Auji
+                </h3>
+                <p style={{
+                  color: '#cccccc',
+                  fontSize: '1rem',
+                  fontFamily: 'Inter, sans-serif',
+                  margin: 0
+                }}>
+                  B.Tech CSE • AI Innovator • Future Entrepreneur
+                </p>
+              </motion.div>
+              
+              {/* Close button */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setImagePopup(false)}
+                style={{
+                  position: 'absolute',
+                  top: '-20px',
+                  right: '-20px',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #76b900, #4ecdc4)',
+                  border: 'none',
+                  color: '#000000',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 10px 30px rgba(118,185,0,0.3)'
+                }}
+              >
+                ×
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

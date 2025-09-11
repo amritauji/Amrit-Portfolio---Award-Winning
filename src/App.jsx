@@ -1,118 +1,48 @@
-import React, { useState, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
-import LoadingManager from './components/LoadingManager'
-import SpaceScene from './components/SpaceScene'
-import AudioPreloader from './components/AudioPreloader'
-import AudioClickPrompt from './components/AudioClickPrompt'
-import SpaceFallback from './components/SpaceFallback'
-import FadeTransition from './components/FadeTransition'
-import { UserPreferences } from './utils/userPreferences'
-import PortfolioSite from './components/PortfolioSite'
+import React, { useState, useEffect, Suspense } from 'react'
+import LoadingScreen from './components/LoadingScreen'
+import PerformanceOptimizer from './components/PerformanceOptimizer'
+
+// Lazy load the main portfolio site
+const PortfolioSite = React.lazy(() => import('./components/PortfolioSite'))
+
+// Simple fallback component
+const PortfolioFallback = () => (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(135deg, #000000, #1a1a2e)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#76b900',
+    fontSize: '1.2rem',
+    fontFamily: 'Inter, sans-serif'
+  }}>
+    Initializing Portfolio...
+  </div>
+)
 
 export default function App() {
-  const [currentScene, setCurrentScene] = useState('intro')
-  const [audioReady, setAudioReady] = useState(false)
-  const [showAudioPrompt, setShowAudioPrompt] = useState(() => {
-    return !UserPreferences.hasVisited()
-  })
-  const [isMuted, setIsMuted] = useState(false)
-  const [assetsLoaded, setAssetsLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadingEl = document.getElementById('loading')
     if (loadingEl) loadingEl.style.display = 'none'
-    
-    // Auto-start if user has visited before
-    if (UserPreferences.hasVisited()) {
-      setShowAudioPrompt(false)
-      UserPreferences.incrementVisitCount()
-    }
   }, [])
 
   return (
-    <LoadingManager onLoadComplete={() => setAssetsLoaded(true)}>
-      {assetsLoaded && (
-        <>
-          {!audioReady && (
-            <AudioPreloader onAudioReady={() => {
-              setAudioReady(true)
-              UserPreferences.setVisited()
-              UserPreferences.incrementVisitCount()
-            }} />
-          )}
-          
-          {audioReady && (
-            <>
-            <FadeTransition currentScene={currentScene} />
-            
-            {/* Control buttons */}
-            {currentScene !== 'portfolio' && (
-              <div style={{
-                position: 'fixed',
-                top: '20px',
-                right: '20px',
-                zIndex: 200,
-                display: 'flex',
-                gap: '10px'
-              }}>
-                <button
-                  onClick={() => setCurrentScene('portfolio')}
-                  style={{
-                    background: 'rgba(0,255,255,0.2)',
-                    color: '#00ffff',
-                    border: '1px solid #00ffff',
-                    padding: '10px 20px',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontFamily: 'Courier New'
-                  }}
-                >
-                  Skip to Portfolio
-                </button>
-                
-                <button
-                  onClick={() => setIsMuted(!isMuted)}
-                  style={{
-                    background: 'rgba(255,255,255,0.2)',
-                    color: '#ffffff',
-                    border: '1px solid #ffffff',
-                    padding: '10px 20px',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontFamily: 'Courier New'
-                  }}
-                >
-                  {isMuted ? '🔇 Unmute' : '🔊 Mute'}
-                </button>
-              </div>
-            )}
-            
-            {currentScene !== 'portfolio' ? (
-              <Canvas
-                camera={{ position: [0, 5, 20], fov: 75 }}
-                style={{ height: '100vh', background: '#000011' }}
-                gl={{ 
-                  antialias: true, 
-                  alpha: false, 
-                  powerPreference: 'high-performance',
-                  stencil: false,
-                  depth: true
-                }}
-                dpr={[1, 2]}
-                performance={{ min: 0.5 }}
-              >
-                <Suspense fallback={<SpaceFallback />}>
-                  <SpaceScene currentScene={currentScene} setCurrentScene={setCurrentScene} isMuted={isMuted} />
-                </Suspense>
-              </Canvas>
-            ) : (
-              <PortfolioSite currentScene={currentScene} />
-            )}
-            </>
-          )}
-        </>
+    <>
+      <PerformanceOptimizer />
+      {isLoading ? (
+        <LoadingScreen onComplete={() => setIsLoading(false)} />
+      ) : (
+        <Suspense fallback={<PortfolioFallback />}>
+          <PortfolioSite />
+        </Suspense>
       )}
-    </LoadingManager>
+    </>
   )
 }

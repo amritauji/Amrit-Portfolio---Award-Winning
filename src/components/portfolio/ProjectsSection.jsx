@@ -1,17 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ProjectsSection() {
   const [activeProject, setActiveProject] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const intervalRef = useRef(null)
   
-  // Auto-rotate projects every 3 seconds
+  // Auto-rotate projects every 5 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveProject(prev => (prev + 1) % projects.length)
-    }, 3000)
+    if (!isPaused) {
+      intervalRef.current = setInterval(() => {
+        setActiveProject(prev => (prev + 1) % projects.length)
+      }, 5000)
+    }
     
-    return () => clearInterval(interval)
-  }, [])
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPaused])
+  
+  const handleProjectClick = (index) => {
+    setActiveProject(index)
+    setIsPaused(true)
+    
+    // Resume auto-rotation after 5 seconds
+    setTimeout(() => {
+      setIsPaused(false)
+    }, 5000)
+  }
   
   // Activate projects on scroll
   useEffect(() => {
@@ -122,7 +140,7 @@ export default function ProjectsSection() {
               marginBottom: '20px'
             }}
           >
-            MISSION
+            PROJECTS
           </motion.h2>
           <motion.div
             initial={{ width: 0 }}
@@ -150,7 +168,7 @@ export default function ProjectsSection() {
             {projects.map((project, index) => (
               <motion.div
                 key={index}
-                onClick={() => setActiveProject(index)}
+                onClick={() => handleProjectClick(index)}
                 whileHover={{ x: 20, scale: 1.02 }}
                 style={{
                   padding: '30px',
@@ -285,27 +303,26 @@ export default function ProjectsSection() {
                 }}
               />
 
-              {/* Floating geometric shapes */}
-              {Array.from({ length: 12 }).map((_, i) => (
+              {/* Optimized floating shapes */}
+              {Array.from({ length: 6 }).map((_, i) => (
                 <motion.div
                   key={i}
                   animate={{
-                    y: [0, -30, 0],
-                    rotate: [0, 180, 360],
-                    scale: [1, 1.2, 1]
+                    y: [0, -20, 0],
+                    rotate: [0, 180, 360]
                   }}
                   transition={{
-                    duration: 4 + i * 0.5,
+                    duration: 4 + i,
                     repeat: Infinity,
-                    delay: i * 0.2
+                    delay: i * 0.3
                   }}
                   style={{
                     position: 'absolute',
-                    width: `${15 + Math.random() * 25}px`,
-                    height: `${15 + Math.random() * 25}px`,
+                    width: '20px',
+                    height: '20px',
                     background: projects[activeProject].color,
-                    left: `${10 + Math.random() * 80}%`,
-                    top: `${10 + Math.random() * 80}%`,
+                    left: `${20 + i * 12}%`,
+                    top: `${20 + i * 10}%`,
                     opacity: 0.3,
                     borderRadius: i % 2 === 0 ? '50%' : '0'
                   }}
@@ -381,7 +398,7 @@ export default function ProjectsSection() {
           {projects.map((project, index) => (
             <motion.button
               key={index}
-              onClick={() => setActiveProject(index)}
+              onClick={() => handleProjectClick(index)}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               style={{

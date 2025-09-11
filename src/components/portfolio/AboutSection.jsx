@@ -50,29 +50,28 @@ export default function AboutSection() {
             position: 'relative'
           }}
         >
-          {/* Floating elements around photo */}
-          {Array.from({ length: 8 }).map((_, i) => (
+          {/* Reduced floating elements around photo */}
+          {Array.from({ length: 4 }).map((_, i) => (
             <motion.div
               key={i}
               animate={{
-                y: [0, -20, 0],
-                rotate: [0, 180, 360],
-                scale: [1, 1.1, 1]
+                y: [0, -15, 0],
+                rotate: [0, 180, 360]
               }}
               transition={{
-                duration: 6 + i,
+                duration: 5 + i,
                 repeat: Infinity,
                 delay: i * 0.5
               }}
               style={{
                 position: 'absolute',
-                width: '20px',
-                height: '20px',
+                width: '15px',
+                height: '15px',
                 background: i % 2 === 0 ? '#76b900' : '#4ecdc4',
-                borderRadius: i % 3 === 0 ? '50%' : '0',
-                left: `${20 + Math.cos(i * 45 * Math.PI / 180) * 150}px`,
-                top: `${20 + Math.sin(i * 45 * Math.PI / 180) * 150}px`,
-                opacity: 0.6
+                borderRadius: '50%',
+                left: `${30 + Math.cos(i * 90 * Math.PI / 180) * 120}px`,
+                top: `${30 + Math.sin(i * 90 * Math.PI / 180) * 120}px`,
+                opacity: 0.5
               }}
             />
           ))}
@@ -353,28 +352,27 @@ export default function AboutSection() {
                 maxHeight: '80vh'
               }}
             >
-              {/* Floating particles around popup */}
-              {Array.from({ length: 12 }).map((_, i) => (
+              {/* Reduced floating particles around popup */}
+              {Array.from({ length: 6 }).map((_, i) => (
                 <motion.div
                   key={i}
                   animate={{
-                    y: [0, -30, 0],
-                    opacity: [0.3, 0.8, 0.3],
-                    scale: [1, 1.2, 1]
+                    y: [0, -20, 0],
+                    opacity: [0.3, 0.6, 0.3]
                   }}
                   transition={{
-                    duration: 3 + Math.random() * 2,
+                    duration: 3,
                     repeat: Infinity,
-                    delay: Math.random() * 2
+                    delay: i * 0.3
                   }}
                   style={{
                     position: 'absolute',
-                    width: '6px',
-                    height: '6px',
+                    width: '4px',
+                    height: '4px',
                     background: i % 2 === 0 ? '#76b900' : '#4ecdc4',
                     borderRadius: '50%',
-                    left: `${-50 + Math.random() * 200}%`,
-                    top: `${-50 + Math.random() * 200}%`,
+                    left: `${10 + i * 15}%`,
+                    top: `${10 + i * 10}%`,
                     zIndex: -1
                   }}
                 />

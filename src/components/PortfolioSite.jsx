@@ -1,39 +1,56 @@
-import React, { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import React, { useEffect, Suspense, lazy } from 'react'
 import { useLenis } from '../hooks/useLenis'
 import Navbar from './Navbar'
 import HeroSection from './portfolio/HeroSection'
-import AboutSection from './portfolio/AboutSection'
-import SkillsSection from './portfolio/SkillsSection'
-import ProjectsSection from './portfolio/ProjectsSection'
-import ExperienceSection from './portfolio/ExperienceSection'
-import ContactSection from './portfolio/ContactSection'
-import Footer from './portfolio/Footer'
 
-export default function PortfolioSite({ currentScene }) {
+// Lazy load heavy sections
+const AboutSection = lazy(() => import('./portfolio/AboutSection'))
+const SkillsSection = lazy(() => import('./portfolio/SkillsSection'))
+const ProjectsPage = lazy(() => import('./ProjectsPage'))
+const ExperienceSection = lazy(() => import('./portfolio/ExperienceSection'))
+const ContactSection = lazy(() => import('./portfolio/ContactSection'))
+const Footer = lazy(() => import('./portfolio/Footer'))
+
+// Lightweight section fallback
+const SectionFallback = () => (
+  <div style={{
+    minHeight: '50vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#76b900',
+    fontSize: '1rem',
+    fontFamily: 'Inter, sans-serif'
+  }}>
+    Loading section...
+  </div>
+)
+
+export default function PortfolioSite() {
   useLenis()
-  
-  useEffect(() => {
-    console.log('PortfolioSite mounted, currentScene:', currentScene)
-  }, [currentScene])
-
-  console.log('PortfolioSite render check - currentScene:', currentScene)
-  
-  if (currentScene !== 'portfolio') {
-    console.log('Not portfolio scene, returning null')
-    return null
-  }
 
   return (
     <div>
       <Navbar />
-      <div id="hero"><HeroSection /></div>
-      <div id="about"><AboutSection /></div>
-      <div id="skills"><SkillsSection /></div>
-      <div id="projects"><ProjectsSection /></div>
-      <div id="timeline"><ExperienceSection /></div>
-      <div id="contact"><ContactSection /></div>
-      <Footer />
+      <section id="hero"><HeroSection /></section>
+      <Suspense fallback={<SectionFallback />}>
+        <section id="about"><AboutSection /></section>
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <section id="skills"><SkillsSection /></section>
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <section id="projects"><ProjectsPage /></section>
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <section id="timeline"><ExperienceSection /></section>
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <section id="contact"><ContactSection /></section>
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Footer />
+      </Suspense>
     </div>
   )
 }

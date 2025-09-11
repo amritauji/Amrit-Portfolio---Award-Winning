@@ -8,12 +8,12 @@ export default function Navbar() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const navItems = [
-    { id: 'hero', label: 'Home', icon: '🏠' },
-    { id: 'about', label: 'About', icon: '👨💻' },
-    { id: 'skills', label: 'Arsenal', icon: '⚡' },
-    { id: 'projects', label: 'Mission', icon: '🚀' },
-    { id: 'timeline', label: 'Timeline', icon: '📈' },
-    { id: 'contact', label: 'Connect', icon: '📡' }
+    { id: 'hero', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Arsenal' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'timeline', label: 'Timeline' },
+    { id: 'contact', label: 'Connect' }
   ]
 
   useEffect(() => {
@@ -21,17 +21,37 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 50)
       
       // Update active section based on scroll position
-      const sections = navItems.map(item => document.getElementById(item.id))
-      const scrollPosition = window.scrollY + 100
+      const scrollPosition = window.scrollY + 150
+      const windowHeight = window.innerHeight
+      
+      const sections = navItems.map(item => {
+        const element = document.getElementById(item.id)
+        return {
+          id: item.id,
+          element,
+          top: element ? element.offsetTop : 0,
+          bottom: element ? element.offsetTop + element.offsetHeight : 0
+        }
+      }).filter(section => section.element)
 
-      sections.forEach((section, index) => {
-        if (section) {
-          const { offsetTop, offsetHeight } = section
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(navItems[index].id)
+      // Find the section that's most visible in viewport
+      let activeSection = 'hero'
+      let maxVisibility = 0
+      
+      sections.forEach(section => {
+        const sectionTop = section.top - 100
+        const sectionBottom = section.bottom - 100
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          const visibility = Math.min(sectionBottom, scrollPosition + windowHeight) - Math.max(sectionTop, scrollPosition)
+          if (visibility > maxVisibility) {
+            maxVisibility = visibility
+            activeSection = section.id
           }
         }
       })
+      
+      setActiveSection(activeSection)
     }
 
     const handleMouseMove = (e) => {
@@ -49,7 +69,16 @@ export default function Navbar() {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      const navbarHeight = 120
+      const offsetTop = element.offsetTop - navbarHeight
+      
+      window.scrollTo({
+        top: Math.max(0, offsetTop),
+        behavior: 'smooth'
+      })
+      
+      // Update active state immediately for better UX
+      setTimeout(() => setActiveSection(sectionId), 100)
     }
     setIsMenuOpen(false)
   }
@@ -72,45 +101,20 @@ export default function Navbar() {
         }}
       >
         <motion.div
-          animate={{
-            background: isScrolled ? 
-              'rgba(255,255,255,0.1)' : 
-              'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: isScrolled ? '25px' : '0px',
-            border: isScrolled ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.1)',
-            boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.3)' : 'none'
-          }}
-          transition={{ duration: 0.3 }}
           style={{
+            background: 'rgba(255,255,255,0.1)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '25px',
+            border: '1px solid rgba(255,255,255,0.2)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: isScrolled ? 'clamp(10px, 2vw, 15px) clamp(15px, 4vw, 30px)' : 'clamp(15px, 3vw, 20px) 0',
+            padding: 'clamp(10px, 2vw, 15px) clamp(15px, 4vw, 30px)',
             position: 'relative',
             overflow: 'hidden'
           }}
         >
-          {/* Animated background glow */}
-          <motion.div
-            animate={{
-              background: [
-                'radial-gradient(circle at 20% 50%, rgba(118,185,0,0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 80% 50%, rgba(76,205,196,0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 50% 20%, rgba(255,107,53,0.1) 0%, transparent 50%)'
-              ]
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: -1,
-              opacity: isScrolled ? 1 : 0
-            }}
-          />
 
           {/* Logo */}
           <motion.div
@@ -194,7 +198,6 @@ export default function Navbar() {
                   }}
                 />
                 
-                <span style={{ marginRight: '8px' }}>{item.icon}</span>
                 {item.label}
               </motion.button>
             ))}
@@ -357,9 +360,6 @@ export default function Navbar() {
                     }}
                   />
                   
-                  <span style={{ fontSize: '1.5rem', marginRight: '15px' }}>
-                    {item.icon}
-                  </span>
                   {item.label}
                 </motion.button>
               ))}

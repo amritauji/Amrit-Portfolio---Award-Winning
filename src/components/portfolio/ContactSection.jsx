@@ -28,7 +28,20 @@ export default function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`New Project Inquiry from ${formData.name}`)
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n\n` +
+      `Message:\n${formData.message}`
+    )
+    const mailtoLink = `mailto:amritauji93@gmail.com?subject=${subject}&body=${body}`
+    
+    // Open email client
+    window.location.href = mailtoLink
+    
+    await new Promise(resolve => setTimeout(resolve, 1000))
     setSubmitted(true)
     setIsSubmitting(false)
   }

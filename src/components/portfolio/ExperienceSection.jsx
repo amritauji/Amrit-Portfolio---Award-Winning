@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ExperienceSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isPaused, setIsPaused] = useState(false)
+  const intervalRef = useRef(null)
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -13,13 +15,30 @@ export default function ExperienceSection() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Auto-rotate timeline every 4 seconds
+  // Auto-rotate timeline every 5 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % experiences.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
+    if (!isPaused) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex(prev => (prev + 1) % experiences.length)
+      }, 5000)
+    }
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPaused])
+  
+  const handleTimelineClick = (index) => {
+    setActiveIndex(index)
+    setIsPaused(true)
+    
+    // Resume auto-rotation after 5 seconds
+    setTimeout(() => {
+      setIsPaused(false)
+    }, 5000)
+  }
 
   const experiences = [
     {
@@ -198,7 +217,7 @@ export default function ExperienceSection() {
                   y: -20,
                   scale: 1.05
                 }}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleTimelineClick(index)}
                 transition={{ delay: index * 0.2 }}
                 style={{
                   cursor: 'pointer',
@@ -584,7 +603,7 @@ export default function ExperienceSection() {
             {experiences.map((exp, index) => (
               <motion.button
                 key={index}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleTimelineClick(index)}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 animate={{

@@ -184,7 +184,7 @@ export default function HeroSection() {
               transition: 'all 0.3s ease'
             }}
           >
-            Resume
+            📄 Resume
           </motion.button>
 
           <motion.button

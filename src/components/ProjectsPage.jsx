@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
-import { gsap } from 'gsap'
 
 export default function ProjectsPage() {
   const [activeProject, setActiveProject] = useState(0)
@@ -80,12 +79,6 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500)
-    
-    gsap.fromTo(containerRef.current, 
-      { opacity: 0 },
-      { opacity: 1, duration: 1, ease: "power2.out" }
-    )
-    
     return () => clearTimeout(timer)
   }, [])
 

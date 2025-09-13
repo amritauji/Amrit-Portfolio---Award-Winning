@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Amrit Auji - Space Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      overflow-x: hidden;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(0,255,255,0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,255,255,0.8); }
+      100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,255,255,0.5); }
+    }
+    
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00ffff;
+      font-size: 24px;
+      z-index: 1000;
+    }
+    
+    .ui-overlay {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: #00ffff;
+      z-index: 100;
+      font-size: 14px;
+    }
+    
+    .navigation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+    
+    .nav-btn {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #00ffff;
+      color: #00ffff;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .nav-btn:hover {
+      background: rgba(0, 255, 255, 0.3);
+      box-shadow: 0 0 20px #00ffff;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-CVkM0fv7.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-QYCSsVv3.js">
+  <link rel="modulepreload" crossorigin href="/assets/animations-BkFXNhu_.js">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>

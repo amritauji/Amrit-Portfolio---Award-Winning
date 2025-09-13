@@ -6,6 +6,9 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('hero')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isScrollingDown, setIsScrollingDown] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   const navItems = [
     { id: 'hero', label: 'Home' },
@@ -18,7 +21,19 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      const currentScrollY = window.scrollY
+      setIsScrolled(currentScrollY > 50)
+      
+      // Hide navbar on mobile when scrolling down
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+      
+      if (mobile && !isMenuOpen && currentScrollY > 100) {
+        setIsScrollingDown(currentScrollY > lastScrollY)
+      } else {
+        setIsScrollingDown(false)
+      }
+      setLastScrollY(currentScrollY)
       
       // Update active section based on scroll position
       const scrollPosition = window.scrollY + 150
@@ -96,24 +111,30 @@ export default function Navbar() {
           left: 0,
           right: 0,
           zIndex: 1000,
-          padding: 'clamp(10px, 3vw, 20px) clamp(15px, 5vw, 5%)',
-          transition: 'all 0.3s ease'
+          padding: 'clamp(10px, 2vw, 20px)',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          transform: isScrollingDown && isMobile ? 'translateY(-100%)' : 'translateY(0)',
+          width: '100%',
+          maxWidth: '100vw'
         }}
       >
-        <motion.div
-          style={{
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: '25px',
-            border: '1px solid rgba(255,255,255,0.2)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 'clamp(10px, 2vw, 15px) clamp(15px, 4vw, 30px)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
+        <div className="container">
+          <motion.div
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(20px)',
+              borderRadius: '25px',
+              border: '1px solid rgba(255,255,255,0.2)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: 'clamp(10px, 2vw, 15px) clamp(15px, 3vw, 30px)',
+              position: 'relative',
+              overflow: 'hidden',
+              width: '100%',
+              maxWidth: '100%'
+            }}
         >
 
           {/* Logo */}
@@ -257,7 +278,8 @@ export default function Navbar() {
               }}
             />
           </motion.button>
-        </motion.div>
+          </motion.div>
+        </div>
       </motion.nav>
 
       {/* Mobile Menu Overlay */}
@@ -447,6 +469,27 @@ export default function Navbar() {
           transformOrigin: 'left'
         }}
       />
+
+      {/* Responsive CSS */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .desktop-nav {
+            display: none !important;
+          }
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+          nav {
+            position: relative !important;
+            transform: none !important;
+          }
+        }
+        @media (min-width: 769px) {
+          .mobile-menu-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   )
 }

@@ -5,12 +5,14 @@ export default function AboutSection() {
   const [imagePopup, setImagePopup] = useState(false)
   
   return (
-    <section className="section" style={{
-      minHeight: '100vh',
-      padding: '0',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div className="section-wrapper">
+      <div className="container">
+        <section className="section" style={{
+          minHeight: '100vh',
+          padding: '0',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
       {/* Diagonal split background */}
       <motion.div
         initial={{ clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' }}
@@ -467,6 +469,19 @@ export default function AboutSection() {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+
+      {/* Mobile Responsive CSS */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .mobile-stack {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+            padding: 20px !important;
+          }
+        }
+      `}</style>
+        </section>
+      </div>
+    </div>
   )
 }

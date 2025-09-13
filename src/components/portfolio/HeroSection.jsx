@@ -17,17 +17,18 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="section mobile-stack" style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      position: 'relative',
-      overflow: 'hidden',
-      padding: 'clamp(80px, 15vw, 120px) clamp(20px, 5vw, 80px) clamp(40px, 8vw, 80px)',
-      flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-      gap: 'clamp(40px, 8vw, 80px)'
-    }}>
+    <div className="section-wrapper">
+      <div className="container">
+        <section className="section mobile-stack" style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'relative',
+          overflow: 'hidden',
+          padding: 'clamp(100px, 15vh, 120px) 0 clamp(40px, 8vh, 80px)',
+          width: '100%'
+        }}>
       {/* Dynamic mesh gradient background */}
       <motion.div
         animate={{
@@ -81,7 +82,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        style={{ flex: 1, maxWidth: '600px', textAlign: window.innerWidth < 768 ? 'center' : 'left' }}
+        style={{ flex: 1, maxWidth: '600px' }}
       >
         <motion.div
           style={{ overflow: 'hidden', marginBottom: '30px' }}
@@ -159,7 +160,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.9 }}
-          style={{ display: 'flex', gap: 'clamp(10px, 3vw, 15px)', flexWrap: 'wrap', justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start' }}
+          style={{ display: 'flex', gap: 'clamp(10px, 3vw, 15px)', flexWrap: 'wrap' }}
         >
           <motion.button
             className="magnet hover-target"
@@ -222,6 +223,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, delay: 0.5 }}
+        className="cube-container"
         style={{
           flex: 1,
           display: 'flex',
@@ -240,8 +242,8 @@ export default function HeroSection() {
             ease: "linear"
           }}
           style={{
-            width: 'clamp(250px, 50vw, 400px)',
-            height: 'clamp(250px, 50vw, 400px)',
+            width: 'clamp(200px, 40vw, 400px)',
+            height: 'clamp(200px, 40vw, 400px)',
             position: 'relative',
             transformStyle: 'preserve-3d'
           }}
@@ -252,8 +254,8 @@ export default function HeroSection() {
               key={i}
               style={{
                 position: 'absolute',
-                width: 'clamp(250px, 50vw, 400px)',
-                height: 'clamp(250px, 50vw, 400px)',
+                width: 'clamp(200px, 40vw, 400px)',
+                height: 'clamp(200px, 40vw, 400px)',
                 background: `linear-gradient(135deg, ${i % 3 === 0 ? '#76b900' : i % 3 === 1 ? '#ff6b35' : '#4ecdc4'}22, transparent)`,
                 border: `2px solid ${i % 3 === 0 ? '#76b900' : i % 3 === 1 ? '#ff6b35' : '#4ecdc4'}`,
                 backdropFilter: 'blur(10px)',
@@ -471,6 +473,43 @@ export default function HeroSection() {
         )}
       </AnimatePresence>
 
-    </section>
+        {/* Responsive CSS */}
+        <style jsx>{`
+          @media (max-width: 768px) {
+            .section {
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
+              text-align: center !important;
+              height: 100vh !important;
+              min-height: 100vh !important;
+              padding: 20px !important;
+            }
+            .cube-container {
+              display: none !important;
+            }
+            .section h1 {
+              font-size: clamp(2.5rem, 12vw, 4rem) !important;
+              margin-left: 0 !important;
+            }
+            .section p {
+              font-size: clamp(1rem, 4vw, 1.2rem) !important;
+              margin-bottom: 15px !important;
+            }
+            .section button {
+              font-size: clamp(14px, 4vw, 16px) !important;
+              padding: 15px 30px !important;
+            }
+          }
+          @media (min-width: 769px) {
+            .section > div:first-child {
+              margin-left: 30px !important;
+            }
+          }
+        `}</style>
+        </section>
+      </div>
+    </div>
   )
 }

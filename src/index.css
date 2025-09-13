@@ -22,6 +22,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   background: #000000;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Global container for symmetric layout */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 80px);
+  width: 100%;
+}
+
+/* Section wrapper */
+.section-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* Performance optimizations */
@@ -65,20 +82,14 @@ img {
   opacity: 1;
 }
 
-/* Hide scrollbar but keep functionality */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 8px;
 }
 
 /* For Firefox */
 * {
-  scrollbar-width: none;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+  scrollbar-width: thin;
 }
 
 ::-webkit-scrollbar-track {
@@ -112,17 +123,8 @@ input, textarea {
   background: none;
 }
 
-/* Responsive design */
+/* Global mobile optimizations */
 @media (max-width: 768px) {
-  .desktop-nav {
-    display: none !important;
-  }
-  
-  .mobile-menu-btn {
-    display: flex !important;
-  }
-  
-  /* Mobile optimizations */
   body {
     font-size: 14px;
   }
@@ -131,33 +133,6 @@ input, textarea {
   * {
     animation-duration: 0.3s !important;
     transition-duration: 0.3s !important;
-  }
-  
-  /* Reduce padding on mobile */
-  .mobile-padding {
-    padding: 20px !important;
-  }
-  
-  /* Stack grid layouts vertically */
-  .mobile-stack {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 20px !important;
-  }
-  
-  /* Smaller text on mobile */
-  .mobile-text {
-    font-size: clamp(0.8rem, 3vw, 1rem) !important;
-  }
-  
-  /* Smaller headings on mobile */
-  .mobile-heading {
-    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
-  }
-  
-  /* Remove sticky positioning on mobile */
-  .mobile-no-sticky {
-    position: static !important;
   }
 }
 

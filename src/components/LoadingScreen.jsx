@@ -245,9 +245,7 @@ export default function LoadingScreen({ onComplete }) {
             textShadow: '0 0 20px rgba(118,185,0,0.5)'
           }}
         >
-          {progress < 25 ? 'INITIALIZING' : 
-           progress < 50 ? 'LOADING ASSETS' :
-           progress < 75 ? 'RENDERING' : 'FINALIZING'}
+          LOADING ASSETS
         </h2>
 
         {/* Liquid progress bar */}

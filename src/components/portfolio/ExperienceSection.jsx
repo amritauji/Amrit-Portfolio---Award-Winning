@@ -566,8 +566,7 @@ export default function ExperienceSection() {
                     padding: '25px',
                     background: 'rgba(255,255,255,0.05)',
                     borderRadius: '15px',
-                    border: `1px solid ${experiences[activeIndex].color}33`,
-                    gridColumn: 'span 2'
+                    border: `1px solid ${experiences[activeIndex].color}33`
                   }}
                 >
                   <h4 style={{
@@ -622,6 +621,23 @@ export default function ExperienceSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Responsive CSS */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .mobile-stack {
+            grid-template-columns: 1fr !important;
+          }
+          .mobile-padding {
+            padding: 20px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .mobile-stack {
+            gap: 20px !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

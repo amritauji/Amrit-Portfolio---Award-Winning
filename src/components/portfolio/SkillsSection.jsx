@@ -8,28 +8,28 @@ export default function SkillsSection() {
     { 
       category: 'Programming', 
       icon: '💻', 
-      skills: ['Java', 'Python', 'JavaScript', 'C++'],
+      skills: ['Java', 'Python', 'JavaScript', 'C++', 'TypeScript', 'SQL', 'DSA', 'OOP'],
       color: '#76b900',
       level: 90
     },
     { 
       category: 'AI/ML', 
       icon: '🤖', 
-      skills: ['NLP', 'Voice Automation', 'Data Science', 'TensorFlow'],
+      skills: ['NLP', 'Voice Automation', 'Data Science', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Edge AI', 'Computer Vision', 'Generative AI'],
       color: '#4ecdc4',
       level: 75
     },
     { 
       category: 'Web Development', 
       icon: '🌐', 
-      skills: ['React', 'FastAPI', 'Supabase', 'MongoDB'],
+      skills: ['React', 'FastAPI', 'Supabase', 'MongoDB', 'Next.js', 'Node.js', 'Tailwind CSS', 'REST APIs'],
       color: '#ff6b35',
       level: 85
     },
     { 
       category: 'DevOps/Cloud', 
       icon: '☁️', 
-      skills: ['Docker', 'Git', 'Cloud Deploy', 'CI/CD'],
+      skills: ['Docker', 'Git', 'Cloud Deploy', 'CI/CD', 'Kubernetes', 'AWS', 'Terraform', 'Monitoring', 'GitHub Actions'],
       color: '#9b59b6',
       level: 70
     }
@@ -42,19 +42,20 @@ export default function SkillsSection() {
       position: 'relative',
       background: 'radial-gradient(ellipse at center, #111111 0%, #000000 100%)'
     }}>
-      {/* Floating tech particles */}
-      {Array.from({ length: 30 }).map((_, i) => (
+      {/* Optimized tech particles */}
+      {Array.from({ length: 15 }).map((_, i) => (
         <motion.div
           key={i}
+          className="particle motion-element"
           animate={{
-            y: [0, -20, 0],
-            opacity: [0.2, 0.6, 0.2],
-            scale: [1, 1.2, 1]
+            y: [0, -15, 0],
+            opacity: [0.3, 0.7, 0.3]
           }}
           transition={{
-            duration: 4 + Math.random() * 2,
+            duration: 3,
             repeat: Infinity,
-            delay: Math.random() * 2
+            delay: i * 0.2,
+            ease: "easeInOut"
           }}
           style={{
             position: 'absolute',
@@ -62,9 +63,10 @@ export default function SkillsSection() {
             height: '2px',
             background: skills[i % skills.length].color,
             borderRadius: '50%',
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            zIndex: 1
+            left: `${10 + (i * 6)}%`,
+            top: `${10 + (i * 5)}%`,
+            zIndex: 1,
+            willChange: 'transform, opacity'
           }}
         />
       ))}
@@ -287,7 +289,7 @@ export default function SkillsSection() {
           }}
         >
           {[
-            { label: 'Technologies', value: '15+' },
+            { label: 'Technologies', value: '35+' },
             { label: 'Projects Built', value: '20+' },
             { label: 'Years Learning', value: '3+' },
             { label: 'Lines of Code', value: '50K+' }

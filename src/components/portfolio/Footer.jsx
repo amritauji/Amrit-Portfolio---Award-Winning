@@ -14,28 +14,28 @@ export default function Footer() {
     { 
       icon: '💼', 
       name: 'LinkedIn', 
-      url: '#',
+      url: 'https://www.linkedin.com/in/amrit-auji/',
       color: '#76b900',
       description: 'Professional Network'
     },
     { 
       icon: '🐙', 
       name: 'GitHub', 
-      url: '#',
+      url: 'https://github.com/amritauji',
       color: '#4ecdc4',
       description: 'Code Repository'
     },
     { 
       icon: '🐦', 
       name: 'Twitter', 
-      url: '#',
+      url: 'https://twitter.com/amritauji',
       color: '#ff6b35',
       description: 'Thoughts & Updates'
     },
     { 
       icon: '📧', 
       name: 'Email', 
-      url: '#',
+      url: 'mailto:amritauji93@gmail.com',
       color: '#9b59b6',
       description: 'Direct Contact'
     }
@@ -55,20 +55,21 @@ export default function Footer() {
       overflow: 'hidden',
       borderTop: '1px solid rgba(118,185,0,0.3)'
     }}>
-      {/* Animated particle field */}
+      {/* Optimized particle field */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
-        {Array.from({ length: 100 }).map((_, i) => (
+        {Array.from({ length: 25 }).map((_, i) => (
           <motion.div
             key={i}
+            className="particle motion-element"
             animate={{
-              y: [0, -20, 0],
-              opacity: [0.1, 0.5, 0.1],
-              scale: [1, 1.2, 1]
+              y: [0, -15, 0],
+              opacity: [0.2, 0.6, 0.2]
             }}
             transition={{
-              duration: 4 + Math.random() * 4,
+              duration: 3,
               repeat: Infinity,
-              delay: Math.random() * 4
+              delay: i * 0.1,
+              ease: "easeInOut"
             }}
             style={{
               position: 'absolute',
@@ -76,8 +77,9 @@ export default function Footer() {
               height: '1px',
               background: i % 4 === 0 ? '#76b900' : i % 4 === 1 ? '#4ecdc4' : i % 4 === 2 ? '#ff6b35' : '#9b59b6',
               borderRadius: '50%',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
+              left: `${5 + (i * 4)}%`,
+              top: `${5 + (i * 3)}%`,
+              willChange: 'transform, opacity'
             }}
           />
         ))}
@@ -279,6 +281,8 @@ export default function Footer() {
                 <motion.a
                   key={i}
                   href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   whileHover={{ 

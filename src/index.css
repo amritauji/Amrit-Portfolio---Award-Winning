@@ -46,6 +46,26 @@ body {
   will-change: auto;
 }
 
+/* Critical rendering optimizations */
+.motion-element {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize font loading */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+
+/* Preload critical resources */
+link[rel="preload"] {
+  as: font;
+  type: font/woff2;
+  crossorigin: anonymous;
+}
+
 /* Reduce animations for low-end devices */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -133,6 +153,17 @@ input, textarea {
   * {
     animation-duration: 0.3s !important;
     transition-duration: 0.3s !important;
+  }
+  
+  /* Disable expensive effects on mobile */
+  .expensive-animation {
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  /* Reduce particle count on mobile */
+  .particle:nth-child(n+11) {
+    display: none;
   }
 }
 
